@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostOpMonitor for Multi-Specialty Clinics</title>
+    <meta name="description" content="Multi-specialty clinics use PostOpMonitor to align follow-up operations across service lines while preserving specialty-specific workflows.">
+    <link rel="icon" href="./assets/postopmonitor.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+        <style>
+        .industry-page {
+            padding-top: 176px;
+            padding-bottom: 96px;
+        }
+        .industry-shell { max-width: 1180px; margin: 0 auto; }
+        .industry-hero { display:grid; grid-template-columns: 1.2fr 0.8fr; gap:18px; align-items:stretch; margin-bottom:16px; }
+        .industry-panel { position:relative; overflow:hidden; background:linear-gradient(165deg, rgba(255,255,255,.09), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:28px; box-shadow:0 20px 55px rgba(0,0,0,.30); }
+        .industry-panel::after { content:""; position:absolute; right:-80px; top:-80px; width:220px; height:220px; border-radius:50%; background:radial-gradient(circle, rgba(38,126,255,.24), rgba(38,126,255,0)); pointer-events:none; }
+        .industry-sub { margin-top:12px; max-width:860px; color:rgba(244,247,255,.9); line-height:1.76; font-size:.96rem; }
+        .kpi-col { display:grid; gap:10px; }
+        .kpi { border:1px solid rgba(255,255,255,.16); background:linear-gradient(160deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); border-radius:14px; padding:14px; transition:transform .25s ease, border-color .25s ease; }
+        .kpi:hover { transform:translateY(-2px); border-color:rgba(93,176,255,.6); }
+        .kpi strong { color:#fff; display:block; font-size:1.18rem; margin-bottom:4px; }
+        .kpi span { color:rgba(244,247,255,.86); font-size:.81rem; line-height:1.55; }
+        .industry-section { margin-top:22px; border:1px solid rgba(255,255,255,.12); background:linear-gradient(165deg, rgba(255,255,255,.05), rgba(255,255,255,.015)); border-radius:16px; padding:18px; }
+        .industry-section h2 { margin:0 0 12px; color:#fff; font-size:1.14rem; letter-spacing:.02em; }
+        .industry-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+        .industry-card { border:1px solid rgba(255,255,255,.13); background:linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); border-radius:13px; padding:14px; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+        .industry-card:hover { transform:translateY(-3px); border-color:rgba(93,176,255,.62); box-shadow:0 12px 28px rgba(0,0,0,.22); }
+        .industry-card h3 { margin:0 0 8px; font-size:.96rem; color:#fff; }
+        .industry-card p { margin:0; font-size:.84rem; line-height:1.62; color:rgba(255,255,255,.9); }
+        .steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+        .step { border:1px solid rgba(255,255,255,.13); background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.015)); border-radius:12px; padding:12px; }
+        .step b { display:inline-flex; width:24px; height:24px; border-radius:50%; align-items:center; justify-content:center; background:linear-gradient(145deg, rgba(26,107,255,.45), rgba(26,107,255,.2)); margin-bottom:7px; font-size:.75rem; color:#fff; }
+        .step h4 { margin:0 0 6px; color:#fff; font-size:.87rem; }
+        .step p { margin:0; color:rgba(244,247,255,.88); font-size:.79rem; line-height:1.52; }
+        .industry-cta { margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .industry-cta .btn-primary,
+        .industry-cta .btn-secondary { min-width: 220px; justify-content: center; }
+        .industry-back { margin-top:16px; display:inline-flex; align-items:center; gap:7px; border:1px solid rgba(255,255,255,.15); border-radius:999px; padding:9px 15px; color:rgba(244,247,255,.9); background:rgba(255,255,255,.03); transition:border-color .25s ease, color .25s ease; }
+        .industry-back:hover { border-color:rgba(93,176,255,.6); color:#fff; }
+        @media (max-width:1080px){ .industry-hero{grid-template-columns:1fr;} .kpi-col{grid-template-columns:repeat(3,minmax(0,1fr));} }
+        @media (max-width:980px){ .industry-grid{grid-template-columns:1fr 1fr;} .steps{grid-template-columns:1fr 1fr;} }
+        @media (max-width:680px){ .industry-panel{padding:20px;} .industry-grid,.steps,.kpi-col{grid-template-columns:1fr;} .industry-cta .btn-primary,.industry-cta .btn-secondary{width:100%;min-width:0;} }
+    </style>
+</head>
+<body>    <canvas id="bg"></canvas>
+
+    <div class="top-contact-bar">
+        <div class="top-contact-bar__inner">
+            <div class="top-contact-bar__flags">
+                <span class="top-contact-flag"><img src="https://flagcdn.com/w20/ca.png" alt="Canada flag"> Canada</span>
+                <span class="top-contact-flag"><img src="https://flagcdn.com/w20/us.png" alt="USA flag"> USA</span>
+                <span class="top-contact-flag"><img src="https://flagcdn.com/w20/ae.png" alt="UAE flag"> UAE</span>
+                <span class="top-contact-flag"><img src="https://flagcdn.com/w20/in.png" alt="India flag"> India</span>
+                <span class="top-contact-flag"><img src="https://flagcdn.com/w20/gb.png" alt="United Kingdom flag"> UK</span>
+            </div>
+            <div class="top-contact-bar__contacts">
+                <span>North America: +1 519 808 1000</span>
+                <span>Asia: +971 56 491 9389</span>
+                <span>Email: info@acesoft.ca</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav__logo">
+            <a href="index.html">
+                <img src="assets/postopmonitor.png" alt="PostOpMonitor Logo" style="height: 64px; width: auto; object-fit: contain;" />
+            </a>
+        </div>
+        <button type="button" class="nav__toggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav__links" id="primaryNav">
+            <a href="index.html#solve">How It Works</a>
+            <a href="index.html#features">Overview</a>
+            <a href="index.html#pricing">Pricing</a>
+            <div class="nav__dropdown">
+                <button type="button" class="nav__dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                    Industries
+                </button>
+                <div class="nav__dropdown-menu" role="menu">
+                    <a href="industry-hospitals.html" role="menuitem">Hospitals</a>
+                    <a href="industry-multi-specialty-clinics.html" role="menuitem">Multi-Specialty Clinics</a>
+                    <a href="industry-surgical-centers.html" role="menuitem">Surgical Centers</a>
+                    <a href="industry-clinical-research-teams.html" role="menuitem">Clinical Research Teams</a>
+                    <a href="industry-clinical-trials-human-studies.html" role="menuitem">Clinical Trials &amp; Human Studies</a>
+                    <a href="industry-distributed-care-networks.html" role="menuitem">Distributed Care Networks</a>
+                </div>
+            </div>
+            <a href="index.html#ai" class="nav__ai-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                AI Features
+            </a>
+        </div>
+        <button class="nav__cta" onclick="window.location.href='contact-us.html'">Let's Connect</button>
+    </nav>
+
+    <section class="industry-page">
+        <div class="container industry-shell">
+            <div class="industry-hero">
+                <div class="industry-panel">
+                    <span class="section-label">Industry Briefing</span>
+                    <h1 class="h2">How PostOpMonitor Supports<br><em>Multi-Specialty Clinics</em></h1>
+                    <p class="industry-sub">Multi-specialty clinics use PostOpMonitor to align follow-up operations across service lines while preserving specialty-specific workflows.</p>
+                </div>
+                <div class="kpi-col reveal">
+                    <div class="kpi"><strong>Operational Consistency</strong><span>Standardized quality across specialties</span></div>
+                    <div class="kpi"><strong>Quicker Response</strong><span>Clear ownership reduces delays</span></div>
+                    <div class="kpi"><strong>Better Oversight</strong><span>Leadership sees cross-specialty trends</span></div>
+                </div>
+            </div>
+
+            <div class="industry-section reveal">
+                <h2>Common Challenges</h2>
+                <div class="industry-grid"><article class='industry-card'><h3>Inconsistent pathways</h3><p>Different specialties run disconnected follow-up methods.</p></article><article class='industry-card'><h3>Ownership confusion</h3><p>Responses are delayed without clear routing.</p></article><article class='industry-card'><h3>Limited comparatives</h3><p>Hard to benchmark outcomes across departments.</p></article></div>
+            </div>
+
+            <div class="industry-section reveal">
+                <h2>How PostOpMonitor Helps</h2>
+                <div class="industry-grid"><article class='industry-card'><h3>Specialty templates</h3><p>Create tailored protocols per service line.</p></article><article class='industry-card'><h3>Smart assignment</h3><p>Route responses directly to right providers.</p></article><article class='industry-card'><h3>Comparative analytics</h3><p>Analyze adherence and outcomes by specialty.</p></article></div>
+            </div>
+
+            <div class="industry-section reveal">
+                <h2>Implementation Journey</h2>
+                <div class="steps"><article class='step'><b>1</b><h4>Map specialties</h4><p>Define procedure-specific pathways.</p></article><article class='step'><b>2</b><h4>Assign teams</h4><p>Set provider and coordinator ownership.</p></article><article class='step'><b>3</b><h4>Track progression</h4><p>Monitor active recovery centrally.</p></article><article class='step'><b>4</b><h4>Optimize performance</h4><p>Use data to improve each pathway.</p></article></div>
+            </div>
+
+            <div class="industry-cta">
+                <button class="btn-primary" onclick="window.location.href='contact-us.html'">Request a Clinic Demo</button>
+                <button class="btn-secondary" onclick="window.location.href='index.html#pricing'">Explore Platform</button>
+            </div></div>
+    </section>
+    <script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+
