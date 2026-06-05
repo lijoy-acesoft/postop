@@ -107,10 +107,19 @@
 
     resize();
     window.addEventListener('resize', resize);
+    window.addEventListener('load', () => requestAnimationFrame(resize));
+    window.addEventListener('hero-heart-resize', resize);
 
     if (typeof ResizeObserver !== 'undefined') {
         const ro = new ResizeObserver(resize);
         ro.observe(container);
+    }
+
+    if (typeof IntersectionObserver !== 'undefined') {
+        const io = new IntersectionObserver((entries) => {
+            if (entries[0]?.isIntersecting) resize();
+        }, { threshold: 0.01 });
+        io.observe(heroSection);
     }
 
     function animate() {

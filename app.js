@@ -437,19 +437,26 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // --- 1. Initial Load Reveal ---
     const initialLoadTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    
+    const heroEl = document.getElementById('hero');
+    const startsBelowHero = heroEl ? window.scrollY > heroEl.offsetHeight * 0.35 : false;
+
     // Set initial states explicitly to avoid flashes
-    gsap.set([".nav-logo", ".nav-links li", ".gs-hero-reveal", ".gs-hero-heart"], { opacity: 0 });
+    gsap.set([".nav-logo", ".nav-links li", ".gs-hero-reveal"], { opacity: 0 });
+    gsap.set(".gs-hero-heart", { opacity: startsBelowHero ? 1 : 0 });
 
     // Instantly start revealing the Hero content, logo, and links at the same time
     initialLoadTl.to(".nav-logo", { y: 0, opacity: 1, duration: 0.8 }, 0)
-                 .to(".nav-links li", { y: 0, opacity: 1, duration: 0.8, stagger: 0.05 }, 0.1)
-                 .fromTo(".gs-hero-heart",
-                     { opacity: 0 },
-                     { opacity: 1, duration: 1.4 }, 0)
-                 .fromTo(".gs-hero-reveal", 
+                 .to(".nav-links li", { y: 0, opacity: 1, duration: 0.8, stagger: 0.05 }, 0.1);
+
+    if (!startsBelowHero) {
+        initialLoadTl.fromTo(".gs-hero-heart",
+            { opacity: 0 },
+            { opacity: 1, duration: 1.4 }, 0);
+    }
+
+    initialLoadTl.fromTo(".gs-hero-reveal",
                      { y: 30, opacity: 0 },
-                     { y: 0, opacity: 1, duration: 1, stagger: 0.08 }, 0.15);
+                     { y: 0, opacity: 1, duration: 1, stagger: 0.08 }, startsBelowHero ? 0.1 : 0.15);
 
     // --- 2. Generic Reveal Animations ---
     gsap.utils.toArray('.gs-reveal').forEach(elem => {
@@ -521,26 +528,52 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // --- 3. Hero Section Parallax & Fade ---
+    const heroHeartEl = document.querySelector('.hero-heart-canvas');
+
+    function ensureHeroHeartVisible() {
+        if (!heroHeartEl) return;
+        const hero = document.getElementById('hero');
+        if (!hero) return;
+        const rect = hero.getBoundingClientRect();
+        const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+        if (inView) {
+            gsap.set(heroHeartEl, { opacity: 1, y: 0 });
+        }
+    }
+
     const heroTl = gsap.timeline({
         scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true // Tightly bound to scrollbar
-        }
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+            invalidateOnRefresh: true,
+            onEnter: ensureHeroHeartVisible,
+            onEnterBack: ensureHeroHeartVisible,
+        },
     });
-    
-    // Smooth upward parallax and fade for the wrappers to avoid conflicts with load animation
-    heroTl.to(".hero-content", { 
-        y: -120, 
-        opacity: 0 
-    }, 0);
-    heroTl.to(".hero-heart-canvas", { 
-        y: -40,
-        opacity: 0.15
-    }, 0);
-    
-    heroTl.to(".hero-bg", { y: 100 }, 0);
+
+    // Fade/copy only — keep heart fully visible while hero is on screen
+    heroTl.fromTo(
+        '.hero-content',
+        { y: 0, opacity: 1 },
+        { y: -120, opacity: 0, ease: 'none' },
+        0
+    );
+    heroTl.fromTo(
+        '.hero-heart-canvas',
+        { y: 0, opacity: 1 },
+        { y: -40, opacity: 1, ease: 'none' },
+        0
+    );
+
+    heroTl.to('.hero-bg', { y: 100 }, 0);
+
+    initialLoadTl.eventCallback('onComplete', () => {
+        ensureHeroHeartVisible();
+        ScrollTrigger.refresh();
+        window.dispatchEvent(new Event('hero-heart-resize'));
+    });
     
     // Custom data-speed parallax implementation for elements with data-speed
     gsap.utils.toArray('[data-speed]').forEach(elem => {
@@ -834,6 +867,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // Rebuild scrub reveals after fonts/layout settle (fixes zero-height measure on first pass)
 window.addEventListener('load', () => {
     setupAllScrollReveals();
+    gsap.set('.hero-heart-canvas', { opacity: 1 });
+    ScrollTrigger.refresh();
+    window.dispatchEvent(new Event('hero-heart-resize'));
 });
 
 window.addEventListener('resize', () => {
