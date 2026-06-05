@@ -197,17 +197,67 @@ p { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 1rem; }
     min-height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding-top: 100px;
+    padding-bottom: 4rem;
     position: relative;
     overflow: hidden;
 }
-.hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    z-index: 2;
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 20%, var(--bg-secondary) 0%, var(--bg-primary) 65%);
+    pointer-events: none;
 }
+
+.hero-heart-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    cursor: crosshair;
+    pointer-events: auto;
+}
+
+.hero-heart-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(ellipse 75% 65% at 50% 42%, rgba(255, 255, 255, 0.55) 0%, transparent 68%);
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    pointer-events: none;
+}
+
+.hero-title {
+    margin-bottom: 1.25rem;
+}
+
 .hero-badge {
     display: inline-block;
     padding: 0.5rem 1rem;
@@ -216,32 +266,65 @@ p { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 1rem; }
     color: var(--cyan);
     font-size: 0.875rem;
     font-weight: 500;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
     box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
 }
+
 .hero-subtitle {
-    font-size: 1.5rem;
-    color: var(--text-primary);
-    margin-bottom: 1.5rem;
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    color: #000000;
+    margin-bottom: 1.25rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+.hero-lead {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #000000;
+    max-width: 620px;
+    margin: 0 auto 2rem;
+}
+
 .hero-metrics {
     display: flex;
-    gap: 2rem;
-    margin-top: 3rem;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2.5rem 3rem;
+    margin-top: 2.5rem;
 }
+
 .hero-metric {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 130px;
 }
+
 .hero-metric strong {
     font-size: 1.5rem;
     color: var(--violet);
     text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
 }
+
 .hero-metric span {
     font-size: 0.875rem;
     color: var(--text-secondary);
+    margin-top: 0.25rem;
 }
+
+.hero-heart-hint {
+    display: inline-block;
+    margin-top: 2.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.5;
+}
+
 .image-placeholder {
     display: flex;
     flex-direction: column;
@@ -1922,6 +2005,14 @@ p { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 1rem; }
     .hero-grid, .key-benefits-layout, .split-screen, .privacy-columns, .research-layout, .footer-bottom {
         grid-template-columns: 1fr;
         gap: 3rem;
+    }
+
+    .hero-metrics {
+        gap: 1.75rem 2rem;
+    }
+
+    .hero-lead {
+        font-size: 1rem;
     }
     
     .nav-links { display: none; }

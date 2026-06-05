@@ -435,53 +435,21 @@ function initPillarsReveal() {
 // Run animations once DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- 1. Ambient Particles in Hero ---
-    const particlesContainer = document.getElementById('hero-particles');
-    for (let i = 0; i < 50; i++) {
-        let p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + 'vw';
-        p.style.top = Math.random() * 100 + 'vh';
-        particlesContainer.appendChild(p);
-        
-        // Infinite float animation
-        gsap.to(p, {
-            y: `-=${Math.random() * 300 + 100}`,
-            x: `+=${Math.random() * 50 - 25}`,
-            opacity: 0,
-            duration: Math.random() * 5 + 3,
-            repeat: -1,
-            delay: Math.random() * 5,
-            ease: "none"
-        });
-    }
-
-    // --- 1.5 Initial Load Reveal ---
+    // --- 1. Initial Load Reveal ---
     const initialLoadTl = gsap.timeline({ defaults: { ease: "power3.out" } });
     
     // Set initial states explicitly to avoid flashes
-    gsap.set([".nav-logo", ".nav-links li", ".gs-hero-reveal", ".gs-hero-media"], { opacity: 0 });
+    gsap.set([".nav-logo", ".nav-links li", ".gs-hero-reveal", ".gs-hero-heart"], { opacity: 0 });
 
     // Instantly start revealing the Hero content, logo, and links at the same time
     initialLoadTl.to(".nav-logo", { y: 0, opacity: 1, duration: 0.8 }, 0)
                  .to(".nav-links li", { y: 0, opacity: 1, duration: 0.8, stagger: 0.05 }, 0.1)
+                 .fromTo(".gs-hero-heart",
+                     { opacity: 0 },
+                     { opacity: 1, duration: 1.4 }, 0)
                  .fromTo(".gs-hero-reveal", 
                      { y: 30, opacity: 0 },
-                     { y: 0, opacity: 1, duration: 1, stagger: 0.08 }, 0.1)
-                 .fromTo(".gs-hero-media", 
-                     { scale: 0.95, opacity: 0, y: 20 },
-                     { scale: 1, opacity: 1, y: 0, duration: 1.2, 
-                       onComplete: () => {
-                           // Start infinite float after entrance
-                           gsap.to(".gs-hero-media .section-photo", {
-                               y: -15,
-                               repeat: -1,
-                               yoyo: true,
-                               ease: "sine.inOut",
-                               duration: 2.5
-                           });
-                       }
-                     }, 0.2);
+                     { y: 0, opacity: 1, duration: 1, stagger: 0.08 }, 0.15);
 
     // --- 2. Generic Reveal Animations ---
     gsap.utils.toArray('.gs-reveal').forEach(elem => {
@@ -564,19 +532,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Smooth upward parallax and fade for the wrappers to avoid conflicts with load animation
     heroTl.to(".hero-content", { 
-        y: -150, 
+        y: -120, 
         opacity: 0 
     }, 0);
-    heroTl.to(".hero-media", { 
-        y: -80, 
-        opacity: 0 
+    heroTl.to(".hero-heart-canvas", { 
+        y: -40,
+        opacity: 0.15
     }, 0);
     
-    // Extra multi-layered parallax for the new background shapes and particles
-    heroTl.to(".shape-1", { y: -200, rotation: 45 }, 0);
-    heroTl.to(".shape-2", { y: -100, rotation: -40, x: 50 }, 0);
-    heroTl.to(".shape-3", { y: -250, rotation: 90 }, 0);
-    heroTl.to(".particles-container", { y: -150 }, 0);
     heroTl.to(".hero-bg", { y: 100 }, 0);
     
     // Custom data-speed parallax implementation for elements with data-speed
